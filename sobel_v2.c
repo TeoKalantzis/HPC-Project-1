@@ -30,7 +30,9 @@ double sobel(unsigned char *input, unsigned char *output, unsigned char *golden)
 {
 	double PSNR = 0, t;
 	int i, j;
+
 	unsigned int p;
+	int p1, p2;
 	int res;
 	struct timespec  tv1, tv2;
 	FILE *f_in, *f_out, *f_golden;
@@ -76,28 +78,27 @@ double sobel(unsigned char *input, unsigned char *output, unsigned char *golden)
 	/* This is the main computation. Get the starting time. */
 	clock_gettime(CLOCK_MONOTONIC_RAW, &tv1);
 	/* For each pixel of the output image */
-	unsigned int p1,p2;
 	for (i=1; i<SIZE-1; i+=1 ) {
 	for (j=1; j<SIZE-1; j+=1) {
 			/* Apply the sobel filter and calculate the magnitude *
 			 * of the derivative.								  */
 
-			p1 = -input[(i-1)*SIZE + j-1] \\ // i-1, j-1
-				\\// + 0, i-1, j IS 0 FOR THE HORIZONTAL
-				+ input[(i-1)*SIZE + j+1] \\ // i-1, j+1 (SAME FOR HORIZONTAL AND VERTICAL)
-				+ input[(i)*SIZE + j-1] * -2 \\ // i, j-1
-				\\// + 0, i, j
-				+ input[(i)*SIZE + j+1] * 2 \\ // i, j+1
-				- input[(i+1)*SIZE + j-1] \\ // i+1, j-1 (SAME FOR HORIZONTAL AND VERTICAL)
-				\\// + 0, i+1, j
+			p1 = -input[(i-1)*SIZE + j-1]  // i-1, j-1
+				// + 0, i-1, j IS 0 FOR THE HORIZONTAL
+				+ input[(i-1)*SIZE + j+1]  // i-1, j+1 (SAME FOR HORIZONTAL AND VERTICAL)
+				+ input[(i)*SIZE + j-1] * -2  // i, j-1
+				// + 0, i, j
+				+ input[(i)*SIZE + j+1] * 2  // i, j+1
+				- input[(i+1)*SIZE + j-1]  // i+1, j-1 (SAME FOR HORIZONTAL AND VERTICAL)
+				// + 0, i+1, j
 				+ input[(i+1)*SIZE + j+1]; // i+1, j+1
 				
-			p2 = input[(i-1)*SIZE + j-1] \\ // i-1, j-1
-				+ input[(i-1)*SIZE + j] * 2 \\ // i-1, j
-				+ input[(i-1)*SIZE + j+1]\\ // i-1, j+1 (SAME FOR HORIZONTAL AND VERTICAL)
-				\\ // i, j-1, j, j+1 are all 0
-				- input[(i+1)*SIZE + j-1]\\ // i+1, j-1
-				+ input[(i+1)*SIZE + j] * -2 \\ // i+1, j
+			p2 = input[(i-1)*SIZE + j-1]  // i-1, j-1
+				+ input[(i-1)*SIZE + j] * 2 // i-1, j
+				+ input[(i-1)*SIZE + j+1] // i-1, j+1 (SAME FOR HORIZONTAL AND VERTICAL)
+				 // i, j-1, j, j+1 are all 0
+				- input[(i+1)*SIZE + j-1] // i+1, j-1
+				+ input[(i+1)*SIZE + j] * -2  // i+1, j
 				- input[(i+1)*SIZE + j+1]; // i+1, j+1 (SAME FOR HORIZONTAL AND VERTICAL)
 			p = pow(p1, 2) + pow(p2, 2);
 
