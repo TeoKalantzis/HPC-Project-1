@@ -97,7 +97,7 @@ double sobel(unsigned char *input, unsigned char *output, unsigned char *golden)
 				\\ // i, j-1, j, j+1 are all 0
 				- input[(i+1)*SIZE + j-1]\\ // i+1, j-1
 				+ input[(i+1)*SIZE + j] * -2 \\ // i+1, j
-				- input[(i+1)*SIZE + j+1]\\ // i+1, j+1 (SAME FOR HORIZONTAL AND VERTICAL)
+				- input[(i+1)*SIZE + j+1] // i+1, j+1 (SAME FOR HORIZONTAL AND VERTICAL)
 			p = pow(p1, 2) + pow(p2, 2);
 
 			res = (int)sqrt(p);
