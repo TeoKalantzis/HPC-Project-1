@@ -76,6 +76,7 @@ double sobel(unsigned char *input, unsigned char *output, unsigned char *golden)
 	/* This is the main computation. Get the starting time. */
 	clock_gettime(CLOCK_MONOTONIC_RAW, &tv1);
 	/* For each pixel of the output image */
+	unsigned int p1,p2;
 	for (i=1; i<SIZE-1; i+=1 ) {
 	for (j=1; j<SIZE-1; j+=1) {
 			/* Apply the sobel filter and calculate the magnitude *
@@ -89,7 +90,7 @@ double sobel(unsigned char *input, unsigned char *output, unsigned char *golden)
 				+ input[(i)*SIZE + j+1] * 2 \\ // i, j+1
 				- input[(i+1)*SIZE + j-1] \\ // i+1, j-1 (SAME FOR HORIZONTAL AND VERTICAL)
 				\\// + 0, i+1, j
-				+ input[(i+1)*SIZE + j+1] // i+1, j+1
+				+ input[(i+1)*SIZE + j+1]; // i+1, j+1
 				
 			p2 = input[(i-1)*SIZE + j-1] \\ // i-1, j-1
 				+ input[(i-1)*SIZE + j] * 2 \\ // i-1, j
@@ -97,7 +98,7 @@ double sobel(unsigned char *input, unsigned char *output, unsigned char *golden)
 				\\ // i, j-1, j, j+1 are all 0
 				- input[(i+1)*SIZE + j-1]\\ // i+1, j-1
 				+ input[(i+1)*SIZE + j] * -2 \\ // i+1, j
-				- input[(i+1)*SIZE + j+1] // i+1, j+1 (SAME FOR HORIZONTAL AND VERTICAL)
+				- input[(i+1)*SIZE + j+1]; // i+1, j+1 (SAME FOR HORIZONTAL AND VERTICAL)
 			p = pow(p1, 2) + pow(p2, 2);
 
 			res = (int)sqrt(p);
